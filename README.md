@@ -1,3 +1,5 @@
 # nadersgh.github.io
 
 Personal website, served by GitHub Pages at https://nadersgh.github.io/
+
+The resume lives in `resume/`. Edit `nader-sghir-resume.tex`, then rebuild the PDF with `tectonic -X compile resume/nader-sghir-resume.tex`.

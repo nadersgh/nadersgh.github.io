@@ -1,0 +1,126 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\emergencystretch=2em
+
+\definecolor{accent}{HTML}{1F3A5F}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1pt,topsep=2pt,parsep=0pt}
+
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0pt}{}[\vspace{-6pt}\rule{\linewidth}{0.5pt}]
+\titlespacing*{\section}{0pt}{9pt}{5pt}
+
+\newcommand{\job}[4]{\textbf{#1}\hfill #4\\ \textit{#2}\hfill\textit{#3}\par\vspace{2pt}}
+\newcommand{\project}[3]{\Needspace{6\baselineskip}\vspace{4pt}\textbf{#1}\ifstrempty{#2}{}{ \textit{(#2)}}\hfill #3\par}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Nader Sghir}\\[3pt]
+{\large\color{accent}\bfseries Lead Data Engineer \textbar{} Data \& AI Platforms}\\[3pt]
+Laval, QC \textperiodcentered{} sghir.nader@gmail.com \textperiodcentered{} \href{https://linkedin.com/in/nadersghir}{linkedin.com/in/nadersghir}
+\end{center}
+
+\section*{Summary}
+Lead Data Engineer with 16 years building production data platforms that feed ML and optimisation models, from airline demand forecasting to aircraft predictive maintenance and multilingual enterprise search. Hands-on across Databricks/Spark on Azure, Airflow and Athena on AWS, and BigQuery. Python-first engineer applying best practices (typing, linting, pre-commit, CI) and AI-assisted development with Anthropic coding agents. Owns the full path from raw data to versioned datasets, MLflow-tracked models, REST APIs and user-facing apps. Contributes to IVADO Labs' internal Python kickstart library, including LLM fine-tuning. Bilingual EN/FR.
+
+\section*{Core Skills}
+\begin{itemize}
+\item \textbf{Languages:} Python (pandas, Polars, PySpark, Pydantic, FastAPI, SQLAlchemy), SQL (advanced, query optimisation), Scala, Java
+\item \textbf{Data platforms:} Databricks, Apache Spark, Snowflake, Airflow, Azure Data Factory, Talend
+\item \textbf{Cloud:} AWS (S3, Glue, Athena, Secrets Manager), Azure (Databricks, ADF, Cosmos DB), GCP (BigQuery)
+\item \textbf{ML enablement:} MLflow (training runs, model versioning), training and feature datasets, inference-serving APIs, embedding evaluation, LLM fine-tuning (PEFT, TRL)
+\item \textbf{Engineering:} Typed, linted Python (mypy, Ruff, Pydantic), pre-commit hooks, GitLab CI/CD, Terraform (IaC), Docker, Poetry/uv, REST API design (Apigee)
+\item \textbf{Data quality and governance:} schema drift detection, freshness validation, sparsity/flatline checks, dataset versioning and registry
+\item \textbf{AI-assisted development:} Anthropic Claude coding agents for implementation, refactoring and tests, under typed, linted, CI-gated workflows
+\item \textbf{Applications:} role-based access and authentication, human-in-the-loop decision UIs
+\item \textbf{Databases:} PostgreSQL, SQL Server, Oracle, MongoDB, Cosmos DB, Elasticsearch
+\end{itemize}
+
+\section*{Experience}
+
+\job{IVADO Labs}{Lead / Senior Data Engineer \textperiodcentered{} Client delivery for AI and data platforms}{Montréal, QC}{Jul 2019 -- Present}
+
+\project{Enterprise Search --- AI-Powered Image \& Multilingual Search}{AWS, Snowflake}{2024 -- Present}
+\begin{itemize}
+\item Built and maintain REST APIs serving image and multilingual search results in production (1,000+ requests/day, 2 languages), integrating encoder outputs into search infrastructure.
+\item Built a reusable encoder evaluation job for image and text embeddings. It selected the best encoder for the use case and is rerun to benchmark encoders on each new customer catalog.
+\item Store and process customer catalog data in Snowflake; provision infrastructure with Terraform.
+\item Mentor and onboard engineers; set documentation standards and code-review practice for a 3-person data team.
+\end{itemize}
+
+\project{Travel \& Hospitality --- Data Platform for ML Revenue Optimisation}{AWS}{2023 -- 2024}
+\begin{itemize}
+\item Built Airflow-orchestrated pipelines moving raw data from GCP BigQuery into S3 Parquet, queried through Glue/Athena, with credentials managed in AWS Secrets Manager.
+\item Migrated orchestration from Python/Lambda scripts to Airflow. Designed a Medallion layout (Raw $\rightarrow$ Bronze $\rightarrow$ Silver $\rightarrow$ Gold) using parameterised SQL, with full, incremental and partition-overwrite run modes.
+\item Introduced semantic versioning of Gold datasets with an S3 run registry and active-version pointer, so ML teams consume stable datasets while upstream pipelines evolve (3 models, 2 partners).
+\item Built data quality checks (freshness, schema drift, alerting): 99\%+ pipeline uptime and SLA compliance. Provisioned infrastructure with Terraform.
+\end{itemize}
+
+\project{Airline --- Demand Forecasting Platform}{Azure}{2021 -- 2023}
+\begin{itemize}
+\item Designed and operated ELT pipelines on Databricks (PySpark) with Azure Data Factory orchestration over 6TB+ of transactional data, feeding forecasting and operations-research models. Lab project on 20 origin-destination markets, validated, then scaled to more markets.
+\item Served ML/OR outputs from Cosmos DB to the planning UI.
+\item Established CI/CD and Git workflows for reproducible, auditable releases.
+\end{itemize}
+
+\project{Aerospace --- Aircraft Predictive Maintenance}{}{2020 -- 2021}
+\begin{itemize}
+\item Built ELT pipelines for business-jet sensor telemetry, with automated quality gates (sparsity, flatline, out-of-range) for certified model training data.
+\item Managed model training runs and model versioning with MLflow; provisioned infrastructure with Terraform.
+\item Developed inference-serving REST API (FastAPI, SQLAlchemy) delivering model outputs to the operational UI.
+\item Built metadata and dependency-tracking framework for reproducibility and auditability of anomaly-detection datasets.
+\end{itemize}
+
+\project{Port Logistics --- Operational Analytics}{}{2019 -- 2020}
+\begin{itemize}
+\item Designed data models and pipelines for vessel ETA prediction and operational forecasting.
+\item Built the full application end to end: UI, user management with roles and authentication, and human-in-the-loop decision making over model outputs.
+\end{itemize}
+
+\project{Internal --- Kickstart Python Library}{}{Ongoing}
+\begin{itemize}
+\item Contribute to IVADO Labs' shared project starter (Polars, MLflow, FastAPI helpers, ML training loop); extending it with an LLM fine-tuning module (PEFT, TRL, training recipes).
+\end{itemize}
+
+\vspace{6pt}
+\job{Facilite Inc. / CGI}{Senior Software \& Data Engineer}{Montréal, QC}{Aug 2016 -- Jun 2019}
+\begin{itemize}
+\item Led data integration and ETL architecture for retail, manufacturing and fintech clients using AWS, Talend, Apigee and SQL.
+\item Migrated a fintech client's pipelines from Talend ETL to Airflow.
+\item Integrated ActiveMQ with Talend ESB to sync inventory across a retailer's stores and warehouse.
+\item Built real-time and batch pipelines integrating REST APIs and third-party sources under strict quality and compliance standards.
+\end{itemize}
+
+\vspace{4pt}
+\job{2i Intelligence}{ETL \& Database Designer}{France}{Apr 2014 -- Jun 2016}
+\begin{itemize}
+\item Designed dimensional warehouses and data marts for market-research firms.
+\end{itemize}
+
+\vspace{4pt}
+\job{TELNET Holding / Decade}{Software Developer}{Tunisia}{Dec 2010 -- Mar 2014}
+\begin{itemize}
+\item Delivered a one-shot ERP data migration for an environmental-services group with zero customer impact.
+\end{itemize}
+
+\section*{Education}
+\textbf{Engineering Degree, Computer Science (Software Engineering)} --- ENIS, Sfax, Tunisia \hfill 2010
+
+\section*{Certifications}
+Databricks Generative AI Fundamentals (2024)
+
+\section*{Languages}
+French (native) \textperiodcentered{} English (full professional) \textperiodcentered{} Arabic (native)
+
+\end{document}

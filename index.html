@@ -3,21 +3,530 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nader Sghir</title>
+  <title>Nader Sghir · Lead Data Engineer, Montréal</title>
+  <meta name="description" content="Nader Sghir, lead data engineer at IVADO Labs in Montréal. Sixteen years building the data platforms that machine-learning models run on.">
+  <meta property="og:title" content="Nader Sghir · Lead Data Engineer">
+  <meta property="og:description" content="Sixteen years building the data platforms that machine-learning models run on.">
+  <meta property="og:url" content="https://nadersgh.github.io/">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1320" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231f2b4d'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='14' font-weight='600' fill='%23ffffff' text-anchor='middle'>NS</text></svg>">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500&display=swap" rel="stylesheet">
+  <script>
+    document.documentElement.classList.add("js");
+    try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
   <style>
-    :root { --bg: #ffffff; --fg: #1a1a1a; --muted: #666; }
-    @media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #eee; --muted: #999; } }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg);
-           font-family: system-ui, -apple-system, sans-serif; padding: 0 16px; }
-    main { max-width: 40rem; text-align: center; }
-    h1 { margin: 0 0 .5rem; font-size: 2.25rem; }
-    p { color: var(--muted); margin: 0; }
+    :root {
+      --bg: #ffffff;
+      --surface: #f4f4f2;
+      --ink: #1f2b4d;
+      --muted: #5d6479;
+      --accent: #1f2b4d;
+      --accent-hover: #2c3c68;
+      --accent-ink: #ffffff;
+      --signal: #f7941d;
+
+      --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+      --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+      --step-head: clamp(1.625rem, 1.4rem + 0.6vw, 1.875rem);
+      --step-display: clamp(2.75rem, 5.2vw, 5.5rem);
+
+      --margin: clamp(20px, 2.2vw, 32px);
+      --col: 560px;
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      color-scheme: light;
+    }
+    /* Dark palette: follows the visitor's system setting unless they pick one with the toggle. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0e1320; --surface: #171e30; --ink: #e4e8f1; --muted: #98a1b6;
+        --accent: #e4e8f1; --accent-hover: #ffffff; --accent-ink: #0e1320;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0e1320; --surface: #171e30; --ink: #e4e8f1; --muted: #98a1b6;
+      --accent: #e4e8f1; --accent-hover: #ffffff; --accent-ink: #0e1320;
+      color-scheme: dark;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: "Clash Grotesk", system-ui, sans-serif; font-size: var(--step-body);
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; transition: color .18s ease; }
+    a:hover { color: var(--accent-hover); }
+    :focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+    ::selection { background: var(--signal); color: #1f2b4d; }
+    h1, h2, h3 { font-weight: 500; margin: 0; }
+    h2 { font-size: var(--step-head); letter-spacing: -0.02em; line-height: 1.1; }
+    section { padding: 128px var(--margin) 0; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px;
+      background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 500;
+      text-decoration: none; border: 0; border-radius: 0; cursor: pointer;
+      transition: background-color .18s ease, transform .14s ease;
+    }
+    .btn:hover { background: var(--accent-hover); color: var(--accent-ink); }
+    .btn:active { transform: scale(.97); }
+    .link { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px var(--margin); font-size: var(--step-small); font-weight: 500;
+    }
+    .topbar a { text-decoration: none; }
+    .topbar nav { display: flex; align-items: center; gap: 28px; }
+    .theme-toggle {
+      display: none; min-height: 40px; margin: -10px 0; padding: 0; background: none; border: 0; border-radius: 0;
+      color: var(--ink); font: inherit; cursor: pointer; transition: color .18s ease, transform .14s ease;
+    }
+    .js .theme-toggle { display: block; }
+    .theme-toggle:hover { color: var(--accent-hover); }
+    .theme-toggle:active { transform: scale(.96); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      display: grid; grid-template-columns: 1fr minmax(0, var(--col)) minmax(0, 524px) 1fr; column-gap: 0;
+      padding: 16svh var(--margin) 0; align-content: start;
+    }
+    .hero h1 {
+      grid-column: 2 / 4; font-size: var(--step-display); line-height: .98; letter-spacing: -0.035em;
+      margin-left: -0.04em; margin-bottom: 40px;
+    }
+    .hero .intro { grid-column: 2; max-width: 46ch; }
+    .hero .intro p { margin: 0 0 28px; }
+    .hero .actions { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .now {
+      grid-column: 3; margin: 0 0 0 64px; padding: 0; list-style: none; font-size: var(--step-small);
+      align-self: start;
+    }
+    .now li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; }
+    .now span:last-child { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* ---------- Work: quiet ledger with a preview ---------- */
+    .work { display: grid; grid-template-columns: 1fr minmax(0, var(--col)) minmax(0, 524px) 1fr; }
+    .work header { grid-column: 2; margin-bottom: 32px; }
+    .work header p { margin: 14px 0 0; color: var(--muted); max-width: 46ch; }
+    .ledger { grid-column: 2; margin: 0; padding: 0; list-style: none; }
+    .row {
+      width: 100%; display: grid; grid-template-columns: 1fr 1.05fr auto; gap: 16px; align-items: baseline;
+      padding: 11px 0; background: none; border: 0; color: var(--ink); font: inherit; text-align: left; cursor: pointer;
+      transition: color .18s ease;
+    }
+    .row .kind { font-size: var(--step-small); color: var(--muted); transition: color .18s ease; }
+    .row .yr { font-size: var(--step-small); color: var(--muted); font-variant-numeric: tabular-nums; }
+    .row .name { font-weight: 500; }
+    .js .ledger:hover .row:not(:hover) .name, .js .ledger.picking .row[aria-pressed="false"] .name { color: var(--muted); }
+    .row[aria-pressed="true"] .name { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; text-decoration-color: var(--signal); }
+    .detail { display: none; }
+    .detail dl, .preview dl { margin: 0; display: grid; gap: 14px; }
+    .detail dt, .preview dt { font-size: var(--step-small); color: var(--muted); }
+    .detail dd, .preview dd { margin: 2px 0 0; }
+    html:not(.js) .detail { display: block; padding: 4px 0 24px; }
+    .preview-wrap { grid-column: 3; grid-row: 1 / span 2; padding-left: 64px; }
+    .preview {
+      position: sticky; top: 32px; background: var(--surface); padding: 32px;
+      display: none;
+    }
+    .js .preview { display: block; }
+    .preview h3 { font-size: var(--step-lead); letter-spacing: -0.015em; line-height: 1.15; margin-bottom: 4px; }
+    .preview .sub { margin: 0 0 24px; color: var(--muted); font-size: var(--step-small); }
+    .preview .body { transition: opacity .15s ease; }
+    .preview.swap .body { opacity: 0; }
+    .flowline { display: flex; gap: 8px; margin: 0 0 22px; }
+    .flowline button {
+      font: inherit; font-size: var(--step-small); font-weight: 500; border: 0; border-radius: 0; cursor: pointer;
+      padding: 0 14px; min-height: 40px; background: var(--bg); color: var(--muted);
+      transition: background-color .18s ease, color .18s ease, transform .14s ease;
+    }
+    .flowline button:hover { color: var(--ink); }
+    .flowline button:active { transform: scale(.96); }
+    .flowline button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+    .preview .fact { font-size: var(--step-lead); line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 24px; min-height: 3.9em; }
+
+    /* ---------- About: letter ---------- */
+    .about { display: grid; place-items: center; padding-top: 160px; }
+    .letter { width: min(100%, 620px); background: var(--surface); padding: 56px 60px 52px; }
+    .letter h2 { margin-bottom: 28px; }
+    .letter p { margin: 0 0 1.1em; line-height: 1.55; }
+    .sign { margin-top: 32px; }
+    .sign b { display: block; font-weight: 500; font-size: var(--step-lead); letter-spacing: -0.015em; }
+    .sign span { font-size: var(--step-small); color: var(--muted); }
+
+    /* ---------- Experience and toolkit: two-ended rows ---------- */
+    .lists { display: grid; grid-template-columns: 1fr minmax(0, var(--col)) minmax(0, 524px) 1fr; }
+    .lists .col { grid-column: 2; }
+    .lists .col + .col { grid-column: 3; padding-left: 64px; }
+    .lists h2 { margin-bottom: 32px; }
+    .group { margin: 0 0 40px; padding: 0; list-style: none; }
+    .group .label { color: var(--muted); padding: 0 0 6px; }
+    .group li:not(.label) { display: grid; grid-template-columns: 1fr auto; gap: 4px 20px; padding: 7px 0; align-items: baseline; }
+    .group .v { font-size: var(--step-small); color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+    .group .note { grid-column: 1 / -1; font-size: var(--step-small); color: var(--muted); max-width: 52ch; }
+
+    /* ---------- Contact ---------- */
+    .contact {
+      display: grid; grid-template-columns: 1fr minmax(0, var(--col)) minmax(0, 524px) 1fr; align-items: start;
+      margin-top: 128px; padding: 112px var(--margin); background: var(--surface);
+    }
+    .contact .say { grid-column: 2; margin: 0; font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem); line-height: 1.15; letter-spacing: -0.02em; max-width: 26ch; }
+    .contact .reach { grid-column: 3; padding-left: 64px; }
+    .contact h2 { font-size: var(--step-lead); margin-bottom: 18px; }
+    .contact .links { display: grid; gap: 8px; margin-bottom: 18px; font-size: var(--step-lead); }
+    .contact .where { font-size: var(--step-small); color: var(--muted); margin: 0; }
+
+    /* ---------- Footer: one quiet line ---------- */
+    footer {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: baseline; gap: 24px;
+      padding: 40px var(--margin) 30px; font-size: var(--step-small); color: var(--muted);
+    }
+    footer nav { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    footer nav a { color: var(--ink); text-decoration: none; }
+    footer nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    footer .end { text-align: right; }
+
+    /* ---------- Entrances ---------- */
+    .js .rise { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(var(--i, 0) * 70ms); }
+    .js .rise.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .js .rise { opacity: 1; transform: none; transition: none; }
+      .preview .body { transition: none; }
+    }
+
+    /* ---------- Tablet ---------- */
+    @media (max-width: 1100px) {
+      .now, .preview-wrap { padding-left: 40px; margin-left: 0; }
+      .lists .col + .col, .contact .reach { padding-left: 40px; }
+    }
+
+    /* ---------- Phone ---------- */
+    @media (max-width: 760px) {
+      :root { --step-display: 8.6vw; }
+      .topbar nav { gap: 20px; }
+      .topbar nav a.opt { display: none; }
+      section { padding-top: 96px; }
+      .hero, .work, .lists { display: block; }
+      .hero { padding-top: 12svh; min-height: 0; }
+      .hero h1 { margin-bottom: 28px; }
+      .now { margin: 48px 0 0; padding-left: 0; }
+      .work header { margin-bottom: 20px; }
+      .row { grid-template-columns: 1fr auto; padding: 14px 0 4px; min-height: 52px; }
+      .row .kind { grid-column: 1 / -1; grid-row: 2; font-size: 14px; }
+      .row .yr { grid-row: 1; grid-column: 2; }
+      .js .ledger:hover .row:not(:hover) .name, .js .ledger.picking .row[aria-pressed="false"] .name { color: var(--ink); }
+      .row[aria-pressed="true"] .name { text-decoration: none; }
+      .detail, html:not(.js) .detail { display: block; padding: 6px 0 22px; font-size: var(--step-body); }
+      .preview-wrap { display: none; }
+      .about { padding-top: 96px; }
+      .letter { padding: 32px 24px; }
+      .lists .col + .col { padding: 24px 0 0; }
+      .group .v { text-align: right; }
+      .contact { display: block; margin-top: 96px; padding: 64px var(--margin); }
+      .contact .reach { padding-left: 0; }
+      .contact .say { font-size: 1.5rem; margin-bottom: 40px; }
+      footer { display: block; padding: 20svh var(--margin) 24px; }
+      footer > * { margin: 0 0 8px; }
+      footer nav { justify-content: flex-start; }
+      footer .end { text-align: left; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Nader Sghir</h1>
-    <p>Site coming soon.</p>
-  </main>
+
+<div class="topbar">
+  <a href="#top">Nader Sghir</a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a>
+    <a class="opt" href="#about">About</a>
+    <a class="opt" href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark theme">Dark</button>
+    <a href="resume/nader-sghir-resume.pdf" download>Resume</a>
+  </nav>
+</div>
+
+<header class="hero" id="top">
+  <h1>Nader Sghir builds<br>data platforms for ML.</h1>
+  <div class="intro">
+    <p>Lead data engineer at IVADO Labs in Montréal. For sixteen years I have built what sits between raw data and the models that use it: pipelines, quality checks, versioned datasets, serving APIs.</p>
+    <div class="actions">
+      <a class="btn" href="mailto:sghir.nader@gmail.com?subject=Hello%20Nader">Email me</a>
+      <a class="link" href="resume/nader-sghir-resume.pdf" download>Download resume (PDF)</a>
+      <a class="link" href="#work">See client work</a>
+    </div>
+  </div>
+  <ul class="now" aria-label="At a glance">
+    <li><span>IVADO Labs</span><span>since 2019</span></li>
+    <li><span>Data engineering</span><span>16 years</span></li>
+    <li><span>Clouds</span><span>AWS, Azure, GCP</span></li>
+    <li><span>Languages</span><span>FR, EN, AR</span></li>
+  </ul>
+</header>
+
+<main>
+  <section class="work" id="work" aria-labelledby="work-title">
+    <header>
+      <h2 id="work-title">Client work at IVADO Labs</h2>
+      <p>Five engagements, newest first. Pick one to see what came in and what went out.</p>
+    </header>
+
+    <ul class="ledger">
+      <li>
+        <button class="row" type="button" aria-pressed="true" aria-controls="preview">
+          <span class="name">Enterprise search</span><span class="kind">AI image and multilingual search</span><span class="yr">2024 –</span>
+        </button>
+        <div class="detail">
+          <dl>
+            <div><dt>What came in</dt><dd data-side="in">Customer catalogs, images and text, held in Snowflake</dd></div>
+            <div><dt>What went out</dt><dd data-side="out">Search APIs serving 1,000+ requests a day in 2 languages, and an encoder benchmark rerun on each new catalog</dd></div>
+            <div><dt>Built with</dt><dd data-side="stack">AWS, Snowflake, Terraform, image and text embeddings</dd></div>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <button class="row" type="button" aria-pressed="false" aria-controls="preview">
+          <span class="name">Travel and hospitality</span><span class="kind">Data platform for revenue optimisation</span><span class="yr">2023–24</span>
+        </button>
+        <div class="detail">
+          <dl>
+            <div><dt>What came in</dt><dd data-side="in">Raw partner data in BigQuery, moved by Python and Lambda scripts</dd></div>
+            <div><dt>What went out</dt><dd data-side="out">Versioned Gold datasets feeding 3 ML models, with 99%+ pipeline uptime</dd></div>
+            <div><dt>Built with</dt><dd data-side="stack">Airflow, S3, Glue, Athena, Terraform, a Medallion layout</dd></div>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <button class="row" type="button" aria-pressed="false" aria-controls="preview">
+          <span class="name">Airline</span><span class="kind">Demand forecasting platform</span><span class="yr">2021–23</span>
+        </button>
+        <div class="detail">
+          <dl>
+            <div><dt>What came in</dt><dd data-side="in">6 TB+ of transactional data</dd></div>
+            <div><dt>What went out</dt><dd data-side="out">Forecasting and operations-research outputs served to the planning UI, piloted on 20 markets then scaled</dd></div>
+            <div><dt>Built with</dt><dd data-side="stack">Databricks, PySpark, Azure Data Factory, Cosmos DB, CI/CD</dd></div>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <button class="row" type="button" aria-pressed="false" aria-controls="preview">
+          <span class="name">Aerospace</span><span class="kind">Predictive maintenance</span><span class="yr">2020–21</span>
+        </button>
+        <div class="detail">
+          <dl>
+            <div><dt>What came in</dt><dd data-side="in">Sensor telemetry from a business-jet fleet</dd></div>
+            <div><dt>What went out</dt><dd data-side="out">Certified training data behind quality gates, versioned models and an inference API for the operations UI</dd></div>
+            <div><dt>Built with</dt><dd data-side="stack">MLflow, FastAPI, SQLAlchemy, Terraform</dd></div>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <button class="row" type="button" aria-pressed="false" aria-controls="preview">
+          <span class="name">Port logistics</span><span class="kind">Operational analytics</span><span class="yr">2019–20</span>
+        </button>
+        <div class="detail">
+          <dl>
+            <div><dt>What came in</dt><dd data-side="in">Port operations data, modelled for forecasting</dd></div>
+            <div><dt>What went out</dt><dd data-side="out">Vessel arrival predictions in an app with roles, sign-in and human review of every decision</dd></div>
+            <div><dt>Built with</dt><dd data-side="stack">Python data models and pipelines, a full web application</dd></div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+
+    <div class="preview-wrap">
+      <aside class="preview" id="preview" aria-live="polite">
+        <div class="body">
+          <h3 data-slot="name">Enterprise search</h3>
+          <p class="sub" data-slot="kind">AI image and multilingual search · 2024 –</p>
+          <div class="flowline" role="group" aria-label="Show">
+            <button type="button" data-show="in" aria-pressed="false">What came in</button>
+            <button type="button" data-show="out" aria-pressed="true">What went out</button>
+          </div>
+          <p class="fact" data-slot="fact"></p>
+          <dl><div><dt>Built with</dt><dd data-slot="stack"></dd></div></dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-title">
+    <article class="letter rise">
+      <h2 id="about-title">How I work</h2>
+      <p>I lead data engineering on IVADO Labs client projects, mostly in transport, aerospace, travel and enterprise software. A typical engagement starts with messy source data and ends with something a team runs every day.</p>
+      <p>That means pipelines with checks for freshness, schema drift and flatlined sensors; datasets versioned so models can rely on them while the sources keep changing; and models tracked in MLflow and served behind an API.</p>
+      <p>I write typed, linted, CI-gated Python, provision with Terraform, and use Claude coding agents for implementation, refactoring and tests, inside the same checks as everything else. I also mentor engineers and set review and documentation practice on my teams.</p>
+      <p>I started in Sfax, Tunisia, worked in France, and have lived in Montréal since 2016. I work in French, English and Arabic.</p>
+      <div class="sign"><b>Nader Sghir</b><span>Lead data engineer, IVADO Labs</span></div>
+    </article>
+  </section>
+
+  <section class="lists" id="experience" aria-label="Experience and toolkit">
+    <div class="col rise">
+      <h2>Experience</h2>
+      <ul class="group">
+        <li class="label">IVADO Labs, Montréal</li>
+        <li><span>Lead / senior data engineer</span><span class="v">2019 – now</span><span class="note">Client delivery of data and AI platforms</span></li>
+        <li><span>Kickstart Python library</span><span class="v">ongoing</span><span class="note">Shared project starter; building its LLM fine-tuning module (PEFT, TRL)</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Facilite / CGI, Montréal</li>
+        <li><span>Senior software and data engineer</span><span class="v">2016–19</span><span class="note">ETL and integration architecture for retail, manufacturing and fintech clients; a Talend to Airflow migration</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Earlier</li>
+        <li><span>ETL and database designer, France</span><span class="v">2014–16</span><span class="note">Data warehouses and marts for market-research firms</span></li>
+        <li><span>Software developer, Tunisia</span><span class="v">2010–14</span><span class="note">A one-shot ERP data migration with zero customer impact</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Education</li>
+        <li><span>Engineering degree, computer science</span><span class="v">ENIS, 2010</span></li>
+        <li><span>Databricks Generative AI Fundamentals</span><span class="v">2024</span></li>
+      </ul>
+    </div>
+    <div class="col rise" style="--i:1">
+      <h2>Toolkit</h2>
+      <ul class="group">
+        <li class="label">Languages</li>
+        <li><span>Python</span><span class="v">pandas, Polars, PySpark, Pydantic</span></li>
+        <li><span>SQL</span><span class="v">advanced, query optimisation</span></li>
+        <li><span>Scala, Java</span><span class="v">when the platform asks</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Platforms and cloud</li>
+        <li><span>Databricks, Spark</span><span class="v">Azure</span></li>
+        <li><span>Airflow, Glue, Athena</span><span class="v">AWS</span></li>
+        <li><span>Snowflake, BigQuery</span><span class="v">warehouses</span></li>
+        <li><span>Terraform, Docker</span><span class="v">infrastructure</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Machine learning</li>
+        <li><span>MLflow</span><span class="v">runs, model versions</span></li>
+        <li><span>FastAPI, SQLAlchemy</span><span class="v">inference APIs</span></li>
+        <li><span>PEFT, TRL</span><span class="v">LLM fine-tuning</span></li>
+      </ul>
+      <ul class="group">
+        <li class="label">Practice</li>
+        <li><span>mypy, Ruff, pre-commit</span><span class="v">typed, linted</span></li>
+        <li><span>GitLab CI/CD</span><span class="v">gated releases</span></li>
+        <li><span>Claude coding agents</span><span class="v">inside the checks</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <p class="say rise">Building a data platform for ML, or fixing one that drifts? I would be glad to hear about it.</p>
+    <div class="reach rise" style="--i:1">
+      <h2 id="contact-title">Get in touch</h2>
+      <div class="links">
+        <a class="link" href="mailto:sghir.nader@gmail.com">sghir.nader@gmail.com</a>
+        <a class="link" href="https://www.linkedin.com/in/nadersghir" rel="noopener">LinkedIn</a>
+        <a class="link" href="resume/nader-sghir-resume.pdf" download>Resume (PDF, 2 pages)</a>
+      </div>
+      <p class="where">Laval, Québec. I usually reply within two days.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Nader Sghir, data engineer</span>
+  <nav aria-label="Footer">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <span class="end">© <span id="yr">2026</span></span>
+</footer>
+
+<script>
+(function () {
+  // Theme: follow the system until the visitor picks one; remember the pick.
+  var root = document.documentElement, toggle = document.querySelector(".theme-toggle");
+  var media = window.matchMedia("(prefers-color-scheme: dark)");
+  function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : media.matches; }
+  function label() {
+    toggle.textContent = isDark() ? "Light" : "Dark";
+    toggle.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme");
+  }
+  toggle.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    label();
+  });
+  media.addEventListener("change", label);
+  label();
+})();
+
+(function () {
+  // Work: pick an engagement, then switch between what came in and what went out.
+  var ledger = document.querySelector(".ledger");
+  var rows = ledger.querySelectorAll(".row");
+  var preview = document.getElementById("preview");
+  var flowBtns = preview.querySelectorAll(".flowline button");
+  var slot = function (n) { return preview.querySelector('[data-slot="' + n + '"]'); };
+  var current = 0, side = "out";
+
+  function render() {
+    var row = rows[current], li = row.parentNode;
+    slot("name").textContent = row.querySelector(".name").textContent;
+    slot("kind").textContent = row.querySelector(".kind").textContent + " · " + row.querySelector(".yr").textContent;
+    slot("fact").textContent = li.querySelector('[data-side="' + side + '"]').textContent;
+    slot("stack").textContent = li.querySelector('[data-side="stack"]').textContent;
+  }
+  function pick(i) {
+    if (i === current) return;
+    current = i;
+    rows.forEach(function (r, j) { r.setAttribute("aria-pressed", String(j === i)); });
+    preview.classList.add("swap");
+    setTimeout(function () { render(); preview.classList.remove("swap"); }, 150);
+  }
+  rows.forEach(function (r, i) {
+    r.addEventListener("click", function () { ledger.classList.add("picking"); pick(i); });
+    r.addEventListener("mouseenter", function () { pick(i); });
+    r.addEventListener("focus", function () { ledger.classList.add("picking"); pick(i); });
+  });
+  flowBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      side = b.dataset.show;
+      flowBtns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      render();
+    });
+  });
+  render();
+
+  // Entrances: each part rises once as it enters.
+  [".hero .intro > *", ".now li", ".work header > *", ".ledger li", ".group li", ".letter > *"].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el, i) {
+      el.classList.add("rise");
+      el.style.setProperty("--i", i % 6);
+    });
+  });
+  var parts = document.querySelectorAll(".rise");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+    parts.forEach(function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    parts.forEach(function (el) { io.observe(el); });
+  }
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+</script>
 </body>
 </html>
