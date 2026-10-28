@@ -1,3 +1,3 @@
-# nader-sghir.github.io
+# nadersgh.github.io
 
-Personal site, served by GitHub Pages at https://nadersgh.github.io/nader-sghir.github.io/
+Personal website, served by GitHub Pages at https://nadersgh.github.io/
